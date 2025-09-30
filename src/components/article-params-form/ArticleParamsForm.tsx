@@ -1,4 +1,4 @@
-import { useState, useRef, FormEvent } from 'react';
+import { useState, useRef, FormEvent, useEffect } from 'react';
 import clsx from 'clsx';
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
@@ -22,17 +22,25 @@ type ArticleParamsFormProps = {
 	isOpen: boolean;
 	onToggle: () => void;
 	onApply: (state: ArticleStateType) => void;
-	initialState: ArticleStateType;
+	currentState: ArticleStateType;
+	defaultState: ArticleStateType;
 };
 
 export const ArticleParamsForm = ({
 	isOpen,
 	onToggle,
 	onApply,
-	initialState,
+	currentState,
+	defaultState,
 }: ArticleParamsFormProps) => {
-	const [formState, setFormState] = useState<ArticleStateType>(initialState);
+	const [formState, setFormState] = useState<ArticleStateType>(currentState);
 	const sidebarRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (isOpen) {
+			setFormState(currentState);
+		}
+	}, [isOpen, currentState]);
 
 	useOutsideClickClose({
 		isOpen,
@@ -48,8 +56,8 @@ export const ArticleParamsForm = ({
 	};
 
 	const handleReset = () => {
-		setFormState(initialState);
-		onApply(initialState);
+		setFormState(defaultState);
+		onApply(defaultState);
 	};
 
 	return (

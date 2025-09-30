@@ -44,7 +44,8 @@ const App = () => {
 				isOpen={isSidebarOpen}
 				onToggle={toggleSidebar}
 				onApply={handleArticleStateChange}
-				initialState={defaultArticleState}
+				currentState={articleState}
+				defaultState={defaultArticleState}
 			/>
 			<Article />
 		</main>

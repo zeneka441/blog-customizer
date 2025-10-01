@@ -8,6 +8,7 @@ import { Separator } from 'src/ui/separator';
 import { Text } from 'src/ui/text';
 import {
 	ArticleStateType,
+	defaultArticleState,
 	fontFamilyOptions,
 	fontSizeOptions,
 	fontColors,
@@ -19,44 +20,40 @@ import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 import styles from './ArticleParamsForm.module.scss';
 
 type ArticleParamsFormProps = {
-	isOpen: boolean;
-	onToggle: () => void;
 	onApply: (state: ArticleStateType) => void;
-	currentState: ArticleStateType;
-	defaultState: ArticleStateType;
 };
 
-export const ArticleParamsForm = ({
-	isOpen,
-	onToggle,
-	onApply,
-	currentState,
-	defaultState,
-}: ArticleParamsFormProps) => {
-	const [formState, setFormState] = useState<ArticleStateType>(currentState);
+export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
+	const [formState, setFormState] =
+		useState<ArticleStateType>(defaultArticleState);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const sidebarRef = useRef<HTMLDivElement>(null);
+
+	const toggleSidebar = () => {
+		setIsOpen(!isOpen);
+	};
 
 	useOutsideClickClose({
 		isOpen,
 		rootRef: sidebarRef,
-		onClose: onToggle,
+		onClose: toggleSidebar,
 		onChange: () => {},
 	});
 
 	const handleSubmit = (event: FormEvent) => {
 		event.preventDefault();
 		onApply(formState);
-		onToggle();
+		toggleSidebar();
 	};
 
 	const handleReset = () => {
-		setFormState(defaultState);
-		onApply(defaultState);
+		setFormState(defaultArticleState);
+		onApply(defaultArticleState);
 	};
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={onToggle} />
+			<ArrowButton isOpen={isOpen} onClick={toggleSidebar} />
 			<aside
 				ref={sidebarRef}
 				className={clsx(styles.container, {

@@ -18,14 +18,9 @@ const root = createRoot(domNode);
 const App = () => {
 	const [articleState, setArticleState] =
 		useState<ArticleStateType>(defaultArticleState);
-	const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
 	const handleArticleStateChange = (newState: ArticleStateType) => {
 		setArticleState(newState);
-	};
-
-	const toggleSidebar = () => {
-		setIsSidebarOpen(!isSidebarOpen);
 	};
 
 	return (
@@ -40,13 +35,7 @@ const App = () => {
 					'--bg-color': articleState.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm
-				isOpen={isSidebarOpen}
-				onToggle={toggleSidebar}
-				onApply={handleArticleStateChange}
-				currentState={articleState}
-				defaultState={defaultArticleState}
-			/>
+			<ArticleParamsForm onApply={handleArticleStateChange} />
 			<Article />
 		</main>
 	);
